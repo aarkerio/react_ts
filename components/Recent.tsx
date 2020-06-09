@@ -46,4 +46,4 @@ class Recent extends Component<IPropTypes, any> {
     }
 }
 
-export default Trending;
+export default Recent;

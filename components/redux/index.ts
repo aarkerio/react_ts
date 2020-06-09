@@ -5,5 +5,7 @@ const rootReducer = combineReducers({
   giphy_rdcr,
 });
 
+export type RootState = ReturnType<typeof rootReducer>;
+
 export default rootReducer;
 

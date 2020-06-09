@@ -20,7 +20,7 @@ export interface IAllSearch {
   timestamp: number
 }
 
-export const loadData = (searchText) => async (dispatch) => {
+export const loadData: any = (searchText) => async (dispatch) => {
     try {
         const URL = "http://api.giphy.com/v1/gifs/random";
         let data: RequestInit = {

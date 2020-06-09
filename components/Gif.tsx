@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 const LOADER = `https://media0.giphy.com/media/l0HlTy9x8FZo0XO1i/200w.webp`;
 
-class Gif extends Component {
+class Gif extends Component<any, any> {
 
     handleLoader() {
         const loaderFlag = this.props.loader;
@@ -21,4 +21,4 @@ class Gif extends Component {
     }
 }
 
-export default Gif
+export default Gif;

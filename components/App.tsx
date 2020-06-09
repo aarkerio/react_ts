@@ -1,74 +1,97 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { bindActionCreators, Dispatch } from 'redux';
+import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import Calls from './Calls';
 import Gif from './Gif';
 import Recent from './Recent';
 import * as GiphyActionCreators from './actions/giphy';
+import { RootState } from './redux/index';
 
-interface ObjectLiteral {
-  [key: string]: any
-}
-
-interface IPropTypes {
-  routeParams:     ObjectLiteral
-  OneTestHashProp: ObjectLiteral
-  QuestionsArrayProp: any[]
+interface IOwnProps {
+  routeParams:    {}
+  OneImgHashProp: {}
+  SearchArrayProp: any[]
   dispatch: any
   cookies: any
   router: any
 }
 
-class App extends Component<IPropTypes, any> {
-    constructor(props){
-        super(props);
-        this.state = {
-            loader : false,
-            searchText : '',
-            gif : {},
-        };
-    }
-
-    searchGif(searchText) {
-        this.setState({
-            loader: true
-        });
-        this.getUrl(searchText, gif => { // callback(myJson)
-            const getDetails = {
-                image : gif.data.fixed_height_downsampled_url,
-                title :  gif.data.title,
-                gifUrl : gif.data.url
-            };
-            this.setState({
-                loader : false,
-                searchText: searchText,
-                gif : getDetails
-            });
-        });
-    }
-
-    render() {
-        return (
-            <div className="container">
-                <h1 className="inscApp">The GIF Search </h1>
-                <Search
-                    onSearch={this.searchGif.bind(this)}
-                />
-                <Gif
-                    loader={this.state.loader}
-                    data={this.state.gif}
-                />
-                <Trending />
-            </div>
-        );
-    }
+interface StateProps {
+  propFromReduxStore: string
 }
 
-export default App;
+interface DispatchProps {
+  onSomeEvent: () => void
+}
 
-const mapStateToProps = (state) => {
-  return {
-    TestsArrayProp: state.rootReducer.tests_rdcr.TestsArrayProp
-  };
-};
+type Props = StateProps & DispatchProps & IOwnProps;
 
-export default connect(mapStateToProps)(App);
+interface State {
+  loader: boolean
+  searchText: string
+  gif: {}
+}
+
+class App extends Component<Props, State> {
+
+  constructor(props: Props){
+    super(props);
+    this.state = {
+      loader : false,
+      searchText : '',
+      gif : {},
+    };
+    if ( ! this.props.SearchArrayProp.length ) {
+      let action = GiphyActionCreators.loadData(this.state.searchText);
+      this.props.dispatch(action);
+    }
+  }
+
+  render() {
+    let rows = [];
+    // this.props.SearchArrayProp.forEach(function(img) {
+    //  rows.push(<TestRowComponent img={img} key={img.id} keyRow={img.id} />);
+    // });
+
+    return (
+      <div className="container_div">
+        <div>
+          <Link to="/testnew">
+            <button type="button" className="btn btn-primary">
+              New Test
+            </button>
+          </Link>
+        </div>
+        <table className="table_class">
+          <thead>
+            <tr>
+              <th style={{width: '35px', textAlign:'center', padding:0}} key='kedit'>Edit</th>
+              <th style={{width: '35px', textAlign:'center', padding:0}} key='kdel'>Delete</th>
+            </tr>
+          </thead>
+          <tbody>
+            { rows }
+          </tbody>
+        </table>
+        { this.props.children }
+      </div>
+    );
+  }
+}
+
+const mapStateToProps = (state: any) => ({
+  SearchArrayProp: state.giphy_rdcr.SearchArrayProp,
+});
+
+const mapDispatchToProps = (dispatch: Dispatch<any>) =>
+  bindActionCreators(
+    {
+      action: GiphyActionCreators.loadData,
+    },
+    dispatch
+  );
+
+export default connect<StateProps,DispatchProps,IOwnProps>(mapStateToProps, mapDispatchToProps)(App);
+
