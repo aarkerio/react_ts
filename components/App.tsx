@@ -3,8 +3,7 @@ import { connect, ConnectedProps } from 'react-redux';
 import { Dispatch } from 'redux';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import Calls from './Calls';
-import Gif from './Gif';
+import Card from './Card';
 import Recent from './Recent';
 import * as GiphyActionCreators from './actions/giphy';
 import { AppState } from './redux/index';
@@ -12,7 +11,8 @@ import { AppState } from './redux/index';
 interface IOwnProps {
   routeParams:    {}
   OneImgHashProp: {}
-  SearchArrayProp: {}
+  SearchArrayProp: any
+  searchText: string
   dispatch: any
   cookies: any
   router: any
@@ -20,7 +20,7 @@ interface IOwnProps {
 
 interface StateProps {
   DataArrayProp: any[]
-  SearchArrayProp: any[]
+  SearchArrayProp: any
 }
 
 interface DispatchProps {
@@ -35,13 +35,15 @@ interface RootState {
   searchText: string
   gif: {}
   DataArrayProp: any[]
-  SearchArrayProp: any[]
+  SearchArrayProp: any
 }
 
-const mapStateToProps = (state: RootState) => ({
-  DataArrayProp:   state.DataArrayProp,
-  SearchArrayProp: state.SearchArrayProp
-});
+const mapStateToProps = (state: any) => {
+  return {
+    SearchArrayProp: state.rootReducer.giphy_rdcr.SearchArrayProp
+  };
+};
+
 
 const mapDispatchToProps = (dispatch: any, ownProps: IOwnProps) => ({
   loadSearch: () => dispatch( GiphyActionCreators.loadSearch(ownProps.searchText) ),
@@ -56,16 +58,11 @@ class App extends Component<Props, RootState> {
     this.state = {
       loader : false,
       searchText : '',
-      DataArrayProp: {},
-      gif : {}
+      DataArrayProp: [],
+      SearchArrayProp: [],
+      properties: {},
+      property: 0
     };
-  }
-
-  componentDidMount() {
-    if ( ! this.state.DataArrayProp.length ) {
-      let action = GiphyActionCreators.loadData();
-      this.props.dispatch(action);
-    }
   }
 
   handleChange(event: any) {
@@ -74,58 +71,73 @@ class App extends Component<Props, RootState> {
       searchText: searchText
     });
     if (searchText.length > 2) {
-      // let action = GiphyActionCreators.loadData();
-      // this.props.dispatch(action);
+      let action = GiphyActionCreators.loadSearch(this.state.searchText);
+      this.props.dispatch(action);
     }
   }
 
-  handleKeyUp(event: any) {
-    if (event.keyCode === 13) {
-      // this.props.onSearch(this.state.searchText)
-    }
+  nextProperty() {
+    const newIndex = this.state.property.index+1;
+    this.setState({
+      property: data.properties[newIndex]
+    });
+  }
+
+  prevProperty() {
+    const newIndex = this.state.property.index-1;
+    this.setState({
+      property: data.properties[newIndex]
+    });
   }
 
   render() {
+    {
+      this.props.SearchArrayProp.map((value, index) =>
+        console.log("  ############  VALUE :  >>>> " + JSON.stringify(value.url))
+      )
+    }
+    const {properties, property} = this.state;
     return (
-      <div className="container_div">
-        <div>
-          <div className="search">
-            <input type="text"
-                   onChange ={this.handleChange.bind(this)}
-                   onKeyUp = {this.handleKeyUp.bind(this)}
-                   placeholder="Search GIF"
-                   value={this.state.searchText}
-            />
-          </div>
-        </div>
-        <div>
-          <Link to="/history">
-            <button type="button" className="btn btn-primary">
-              See history of searches
-            </button>
-          </Link>
-        </div>
-        <div>
-          {this.props.SearchArrayProp.map((q, i) =>
-            <div key={i} className="giphs_div">
-              <div><b>Explanation</b>: {q.explanation}</div>
-              <div><b>Hint</b>: {q.hint}</div>
-              <div><b>Worth</b>: {q.worth}</div>
-              <div><b>Active</b>: { q.active ? 'Enabled' : 'Disabled'} </div>
-              <div><b>Type</b>: { q.qtype  ?  'Multiple Option' : 'Open question' } </div>
-              <div className="right_button">
-                <Link to={"/questionedit/"+q.id+"/"}>
-                  <button type="button" className="btn btn-default btn-sm" title="Edit question">Edit </button>
-                </Link>
-              </div>
-              { this.renderReorderButton(q.id, i, false) }
+        <div className="App">
+
+          <button
+            onClick={() => this.nextProperty()}
+            disabled={property.index === data.properties.length-1}
+          >Next</button>
+          <button
+            onClick={() => this.prevProperty()}
+            disabled={property.index === 0}
+          >Prev</button>
+
+          <div className="page">
+            <section>
+              <h1>Image slideshow From Giphy.</h1>
+            </section>
+
+            <div className="col">
+              <div className={`cards-slider active-slide-${property.index}`}>
+                <div className="cards-slider-wrapper" style={{
+                  'transform': `translateX(-${property.index*(100/properties.length)}%)`
+                }}>
+                  {
+                    this.props.SearchArrayProp.map(property => <Card key={property._id} property={property} />)
+                  }
+                </div>
               </div>
             </div>
-          )}
+
+          </div>
+          <div className="float-rigth">
+            <Link to="/history">
+              <button type="button" className="btn btn-primary">
+                See history of searches
+              </nbutton>
+            </Link>
+          </div>n
         </div>
     );
   }
 }
 
-export default connect<StateProps, any, IOwnProps>(mapStateToProps, mapDispatchToProps)(App);
+export default connect<any, any, IOwnProps>(mapStateToProps, mapDispatchToProps)(App);
 

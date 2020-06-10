@@ -8,6 +8,8 @@ import Recent          from '../components/Recent';
 import NotFound        from '../components/NotFound';
 import configureStore  from '../components/config/configureStore';     // load redux store
 
+require('../src/stylesheet/main.scss');
+
 const my_store = configureStore();
 
 /** <Route path="*" component={NotFound} status={404} /> ***/

@@ -17,22 +17,13 @@ export default function configureStore(initialState={}) {
     combineReducers({
         rootReducer,
         routing: routerReducer
-    })
-    ,
+    }),
     initialState,
     compose(
       applyMiddleware(thunk, createLogger()),
       window.devToolsExtension ? window.devToolsExtension() : f => f
     )
   );
-
-   if (module.hot) {
-     // Enable Webpack hot module replacement for reducers
-     module.hot.accept('../redux', () => {
-       const nextRootReducer = require('../redux').default;
-       store.replaceReducer(nextRootReducer);
-     });
-   }
 
   return store;
 }
