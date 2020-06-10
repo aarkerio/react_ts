@@ -4,12 +4,14 @@ import { RECEIVE_SEARCH, LOAD_DATA } from '../actions/giphy';
 
 export interface IReduxSearchState {
   SearchArrayProp: any[]
-  OneimgObjProp: {}
+    OneimgObjProp: {},
+    DataArrayProp: []
 }
 
 const initialState: IReduxSearchState = {
-  SearchArrayProp:    [],
-  OneimgObjProp:     {},
+  SearchArrayProp:  [],
+    OneimgObjProp:  {},
+    DataArrayProp: []
 };
 
 const giphy_rdcr = (state: IReduxSearchState = initialState, action: any) => {

@@ -10,15 +10,15 @@ import configureStore  from '../components/config/configureStore';     // load r
 
 const my_store = configureStore();
 
+/** <Route path="*" component={NotFound} status={404} /> ***/
+
 if ( document.getElementById('reactroot')) {
   ReactDOM.render(
     <Provider store={my_store}>
       <div>
-        { /* Tell the Router to use our enhanced history */ }
         <Router>
           <Route exact path="/" component={App} />
           <Route path="/search/:id" component={Recent} />
-          <Route path="*" component={NotFound} status={404} />
         </Router>
       </div>
     </Provider>,

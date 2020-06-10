@@ -17,19 +17,8 @@ function headers() {
 
 export const loadData: any = () => async (dispatch: any) => {
     try {
-        const URL = "http://api.giphy.com/v1/gifs/random";
-        let data: RequestInit = {
-            method:      'POST',
-            credentials: 'same-origin',
-            mode:        'same-origin',
-            body:        JSON.stringify({
-                limit:  6,
-                active: true,  // get all
-                api_key: GIPHY_API_KEY
-            }),
-            headers:     headers()
-        }
-        const res      = await fetch(URL, data);
+        const URL = "http://api.giphy.com/v1/gifs/random?limit=6&api_key=" + GIPHY_API_KEY;
+        const res      = await fetch(URL);
         const response = await res.json();
         const result   = await dispatch(receiveData(response));
         console.log("  ############  RESULT :  >>>> " + JSON.stringify(result));
@@ -48,20 +37,8 @@ function receiveData(DataArrayProp: any) {
 
 export const loadSearch: any = (searchText: string) => async (dispatch: any) => {
     try {
-        const URL = "http://api.giphy.com/v1/gifs/trending";
-        let data: RequestInit = {
-            method:      'POST',
-            credentials: 'same-origin',
-            mode:        'same-origin',
-            body:        JSON.stringify({
-                limit:   4,
-                searchText: searchText,
-                api_key: GIPHY_API_KEY,
-                active:  true,  // get all
-            }),
-            headers:     headers()
-        }
-        const res      = await fetch(URL, data);
+        const URL = `http://api.giphy.com/v1/gifs/search?q=${searchText}&limit=20&api_key=${GIPHY_API_KEY}`;
+        const res      = await fetch(URL);
         const response = await res.json();
         const result   = await dispatch(receiveDefault(response));
         return result;
