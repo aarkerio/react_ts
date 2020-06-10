@@ -7,12 +7,13 @@ import Calls from './Calls';
 import Gif from './Gif';
 import Recent from './Recent';
 import * as GiphyActionCreators from './actions/giphy';
-import { RootState } from './redux/index';
+import { AppState } from './redux/index';
 
 interface IOwnProps {
   routeParams:    {}
   OneImgHashProp: {}
   SearchArrayProp: any[]
+  DataArrayProp: any[]
   dispatch: any
   cookies: any
   router: any
@@ -36,31 +37,33 @@ interface State {
 
 class App extends Component<Props, State> {
 
+  static propTypes = {
+    SearchArrayProp: PropTypes.array,
+    DataArrayProp:   PropTypes.array,
+    dispatch:        PropTypes.func,
+  }
+
   constructor(props: Props){
     super(props);
     this.state = {
       loader : false,
       searchText : '',
-      gif : {},
+      gif : {}
     };
-    if ( ! this.props.SearchArrayProp.length ) {
-      let action = GiphyActionCreators.loadData(this.state.searchText);
-      this.props.dispatch(action);
-    }
   }
 
+  /* componentDidMount() {
+   *   if ( ! this.state.DataArrayProp.length ) {
+   *     let action = GiphyActionCreators.loadData();
+   *     this.props.dispatch(action);
+   *   }
+   * }
+   */
   render() {
-    let rows = [];
-    // this.props.SearchArrayProp.forEach(function(img) {
-    //  rows.push(<TestRowComponent img={img} key={img.id} keyRow={img.id} />);
-    // });
-
     return (
       <div className="container_div">
         <div>
-          <Calls
-            onSearch={ this.props.dispatch("loadData") }
-          />
+
         </div>
         <div>
           <Link to="/testnew">
@@ -77,7 +80,7 @@ class App extends Component<Props, State> {
             </tr>
           </thead>
           <tbody>
-            { rows }
+
           </tbody>
         </table>
         { this.props.children }
@@ -86,17 +89,13 @@ class App extends Component<Props, State> {
   }
 }
 
-const mapStateToProps = (state: any) => ({
-  SearchArrayProp: state.giphy_rdcr.SearchArrayProp,
+const mapStateToProps = (state: AppState) => ({
+  DataArrayProp: state.giphy_rdcr.DataArrayProp,
+  giphy_rdcr: state.giphy_rdcr,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) =>
-  bindActionCreators(
-    {
-      action: GiphyActionCreators.loadData,
-    },
-    dispatch
-  );
+  bindActionCreators({loadData: GiphyActionCreators.loadData}, dispatch);
 
 // <any,DispatchProps,IOwnProps>
 export default connect<any,any,IOwnProps>(mapStateToProps, mapDispatchToProps)(App);
