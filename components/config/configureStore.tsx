@@ -1,19 +1,9 @@
 import { createStore, applyMiddleware, compose, combineReducers } from 'redux';
 import thunk from 'redux-thunk';
 import { createLogger } from 'redux-logger';
-import rootReducer from '../reducers/index';
+import rootReducer from '../redux/index';
 
 import { routerReducer } from 'react-router-redux';
-
-let config: object = {
-    apiKey: "AIzaSyChwqJStEFV_jHxtWcsNTFvoDzi2DLDDRE",
-    authDomain: "schnellentest.firebaseapp.com",
-    databaseURL: "https://schnellentest.firebaseio.com",
-    storageBucket: "",
-    messagingSenderId: "254335011558"
-};
-
-// firebase.initializeApp(config);
 
 declare global {
   interface Window {
@@ -38,8 +28,8 @@ export default function configureStore(initialState={}) {
 
    if (module.hot) {
      // Enable Webpack hot module replacement for reducers
-     module.hot.accept('../reducers', () => {
-       const nextRootReducer = require('../reducers').default;
+     module.hot.accept('../redux', () => {
+       const nextRootReducer = require('../redux').default;
        store.replaceReducer(nextRootReducer);
      });
    }

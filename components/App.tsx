@@ -58,6 +58,11 @@ class App extends Component<Props, State> {
     return (
       <div className="container_div">
         <div>
+          <Calls
+            onSearch={ this.props.dispatch("loadData") }
+          />
+        </div>
+        <div>
           <Link to="/testnew">
             <button type="button" className="btn btn-primary">
               New Test
@@ -93,5 +98,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) =>
     dispatch
   );
 
-export default connect<StateProps,DispatchProps,IOwnProps>(mapStateToProps, mapDispatchToProps)(App);
+// <any,DispatchProps,IOwnProps>
+export default connect<any,any,IOwnProps>(mapStateToProps, mapDispatchToProps)(App);
 

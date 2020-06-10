@@ -7,23 +7,27 @@ console.log('NODE_ENV: ', env);
 config = {
     entry: [
         "react-hot-loader/patch",
-        './src/index.tsx'
+        './components/index.tsx'
     ],
-    output: {
-        path: __dirname + '/build',
-        filename: 'bundle.js'
+  devtool: 'inline-source-map',
+  resolve: {
+    extensions: ['.tsx', '.ts', '.js']
+  },
+  output: {
+    path: __dirname + '/build',
+    filename: 'bundle.js'
+  },
+  module: {
+    rules: [{
+      test: /\.ts(x?)$/,
+      exclude: /node_modules/,
+      use: [
+        {
+          loader: "ts-loader"
+        }
+      ]
     },
-    module: {
-      rules: [{
-                test: /\.ts(x?)$/,
-                exclude: /node_modules/,
-                use: [
-                    {
-                      loader: "ts-loader"
-                    }
-                ]
-            },
-            {
+     {
                 test: /\.js$/,
                 loader: "babel-loader"
             },

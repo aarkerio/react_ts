@@ -12,7 +12,7 @@ interface IPropTypes {
   router: any
 }
 
-class Calls extends Component<IPropTypes, any> {
+class Calls extends Component<any, any> {
   constructor(props: IPropTypes) {
     super(props);
     this.state = {value: ''};

@@ -13,7 +13,7 @@ interface IPropTypes {
 
 
 class Recent extends Component<IPropTypes, any> {
-    constructor(props) {
+  constructor(props: IPropTypes) {
         super(props)
         this.state = {
             gifs : {data:[]}
@@ -32,7 +32,7 @@ class Recent extends Component<IPropTypes, any> {
     }
 
     render() {
-        const listItems = this.state.gifs.data.map((item) =>
+        const listItems = this.state.gifs.data.map((item: any) =>
             <a href={item.url} target="new" key={item.id}>
                 <img src={item.images.original.url} />
             </a>
