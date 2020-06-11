@@ -1,13 +1,10 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import * as GiphyActionCreators from './actions/giphy';
 
 interface IPropTypes {
-  answer: {id:      number,
-           correct: boolean,
-           active:  boolean,
-           answer:  string },
-  keyRow:    string,
-  dispatch:  any,
+  search:    string
+  dispatch:  any
   onChange:  any
 }
 
@@ -18,8 +15,9 @@ class Recent extends Component<IPropTypes, any> {
     this.state = {
       gifs : {data:[]}
     };
-    /* if ( ! Object.keys(this.props.TestsHashProp).length ) {
-     *   let action = GiphyActionCreators.fetchHot(this.state.user_id);
+    /*  TODO
+     *  if ( ! Object.keys(this.props.HistoryHashProp).length ) {
+     *   let action = GiphyActionCreators.fetchHistory();
      *   this.props.dispatch(action);
      * }
      */
@@ -33,7 +31,15 @@ class Recent extends Component<IPropTypes, any> {
     );
     return (
       <div className="pakageTrending">
-        <h1>Top Trending</h1>
+        <h1>Your recent searches</h1>
+        <div className="float-rigth"><br /><br /><br />
+          <Link to="/history">
+            <button type="button" className="btn btn-primary">
+              Delete History
+            </button>
+          </Link>
+        </div>
+
         <div className="trending">{listItems}</div>
       </div>
     )

@@ -1,28 +1,28 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const Card = ({property}) => {
-  // const {index, url, city, address, bedrooms} = property;
-  let index = 0;
+const Card = ({property, index}) => {
+    console.log("  ############  INDEX INSIDE CARD :  >>>> " + JSON.stringify(index));
     return (
       <div id={`card-${index}`} className="card">
         <img src={property.images.fixed_height_small_still.url} alt={property.title} title={property.title} />
         <div className="details">
-          <span className="index">{index+1}</span>
+          <span className="index">Rating: {property.rating}</span>
           <p className="location">
             {property.title}<br />
             {property.title}
           </p>
           <ul className="features">
-            <li className="icon-bed">{property.title} <span>bedrooms</span></li>
+            <li className="icon-bed">{property.title} </li>
           </ul>
         </div>
       </div>
     );
-}
+};
 
 Card.propTypes = {
-    property: PropTypes.object.isRequired
-}
+  property: PropTypes.object.isRequired,
+  index: PropTypes.number.isRequired
+};
 
 export default Card;

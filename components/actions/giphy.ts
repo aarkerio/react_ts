@@ -23,7 +23,6 @@ export const loadData: any = () => async (dispatch: any) => {
         const res      = await fetch(URL);
         const response = await res.json();
         const result   = await dispatch(receiveData(response));
-        console.log("  ############  RESULT :  >>>> " + JSON.stringify(result));
         return result;
     } catch (err) {
         console.error('Errorloading data: >> ', err.toString());
@@ -43,7 +42,6 @@ export const loadSearch: any = (searchText: string) => async (dispatch: any) => 
         const res      = await fetch(URL);
         const response = await res.json();
         const result   = await dispatch(receiveSearch(response));
-        console.log("  ############  RESULT :  >>>> " + JSON.stringify(result));
         return result;
     } catch (err) {
         console.error('Errorloading data: >> ', err.toString());

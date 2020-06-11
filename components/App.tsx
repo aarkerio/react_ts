@@ -33,9 +33,10 @@ type Props = StateProps & DispatchProps & IOwnProps;
 interface RootState {
   loader: boolean
   searchText: string
-  gif: {}
   DataArrayProp: any[]
   SearchArrayProp: any
+  properties: any
+  property: any
 }
 
 const mapStateToProps = (state: any) => {
@@ -77,64 +78,73 @@ class App extends Component<Props, RootState> {
   }
 
   nextProperty() {
-    const newIndex = this.state.property.index+1;
+    console.log("  ############  NEXT STATE PROPERTY :  >>>> " +  this.state.property);
+    const newIndex = this.state.property + 1;
     this.setState({
-      property: data.properties[newIndex]
+      property: newIndex
     });
   }
 
   prevProperty() {
-    const newIndex = this.state.property.index-1;
+    const newIndex = this.state.property - 1;
     this.setState({
-      property: data.properties[newIndex]
+      property: newIndex
     });
   }
 
   render() {
     {
       this.props.SearchArrayProp.map((value, index) =>
-        console.log("  ############  VALUE :  >>>> " + JSON.stringify(value.url))
+        console.log("  ############ index >> " + index)
       )
     }
+    console.log("  ############  STATE PROPERTY :  >>>> " +  this.state.property);
     const {properties, property} = this.state;
+    const currentLength = this.props.SearchArrayProp.length;
+    console.log("  ############  currentLength :  >>>> " + JSON.stringify(currentLength))
     return (
-        <div className="App">
-
-          <button
-            onClick={() => this.nextProperty()}
-            disabled={property.index === data.properties.length-1}
-          >Next</button>
-          <button
-            onClick={() => this.prevProperty()}
-            disabled={property.index === 0}
-          >Prev</button>
-
-          <div className="page">
-            <section>
-              <h1>Image slideshow From Giphy.</h1>
-            </section>
-
-            <div className="col">
-              <div className={`cards-slider active-slide-${property.index}`}>
-                <div className="cards-slider-wrapper" style={{
-                  'transform': `translateX(-${property.index*(100/properties.length)}%)`
-                }}>
-                  {
-                    this.props.SearchArrayProp.map(property => <Card key={property._id} property={property} />)
-                  }
-                </div>
+      <div className="App">
+        <button
+          onClick={this.prevProperty.bind(this)}
+          disabled={this.state.property === 0}
+        >Prev</button>
+        <button
+          onClick={this.nextProperty.bind(this)}
+          disabled={this.state.property === (currentLength.length - 1)}
+        >Next</button>
+        <br />
+        <div className="page">
+          <div className="search">
+            <input type="text"
+                   onChange ={this.handleChange.bind(this)}
+                   placeholder="Search GIF"
+                   value={this.state.searchText}
+            />
+          </div>
+          <section>
+            <h1>Image slideshow From Giphy.</h1>
+          </section>
+          <div className="col">
+            <div className={`cards-slider active-slide-${this.state.property}`}>
+              <div className="cards-slider-wrapper" style={{
+                'transform': `translateX(-${this.state.property * (100 / currentLength)}%)`
+              }}>
+                {
+                  this.props.SearchArrayProp.map((property, index) => <Card key={property.id} index={index} property={property} />)
+                }
               </div>
             </div>
-
           </div>
-          <div className="float-rigth">
-            <Link to="/history">
-              <button type="button" className="btn btn-primary">
-                See history of searches
-              </nbutton>
-            </Link>
-          </div>n
+
         </div>
+        <div className="float-rigth"><br /><br /><br />
+          <Link to="/history">
+            <button type="button" className="btn btn-primary">
+              See history of searches
+            </button>
+          </Link>
+        </div>
+      </div>
     );
   }
 }

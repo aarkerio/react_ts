@@ -20,7 +20,7 @@ if ( document.getElementById('reactroot')) {
       <div>
         <Router>
           <Route exact path="/" component={App} />
-          <Route path="/search/:id" component={Recent} />
+          <Route path="/history" component={Recent} />
         </Router>
       </div>
     </Provider>,
