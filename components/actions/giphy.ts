@@ -25,7 +25,7 @@ export const loadData: any = () => async (dispatch: any) => {
         const result   = await dispatch(receiveData(response));
         return result;
     } catch (err) {
-        console.error('Errorloading data: >> ', err.toString());
+        console.error('Error loading data: >> ', err.toString());
     }
 }
 
@@ -44,7 +44,7 @@ export const loadSearch: any = (searchText: string) => async (dispatch: any) => 
         const result   = await dispatch(receiveSearch(response));
         return result;
     } catch (err) {
-        console.error('Errorloading data: >> ', err.toString());
+        console.error('Error loading data: >> ', err.toString());
     }
 }
 

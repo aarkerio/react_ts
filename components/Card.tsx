@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 const Card = ({property, index}) => {
-    console.log("  ############  INDEX INSIDE CARD :  >>>> " + JSON.stringify(index));
     return (
       <div id={`card-${index}`} className="card">
         <img src={property.images.fixed_height_small_still.url} alt={property.title} title={property.title} />
