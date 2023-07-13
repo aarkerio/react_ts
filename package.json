@@ -6,7 +6,7 @@
   "dependencies": {
     "@types/react-router-redux": "^5.0.18",
     "@types/redux-thunk": "^2.1.0",
-    "jsdom": "^16.2.2",
+    "jsdom": "^16.5.0",
     "prop-types": "^15.7.2",
     "react-bootstrap": "^1.0.1",
     "react-bs-notifier": "^5.0.0",
